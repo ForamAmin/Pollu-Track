@@ -13,7 +13,7 @@
                 <a href="#" class="logo">PolluTrack</a>
                 <nav>
                     <ul>
-                        <li><a href="front.html">Home</a></li>
+                        <li><a href="/">Home</a></li>
                         <li><a href="#about-pm">About PM</a></li>
                         <li><a href="#features">Features</a></li>
                         <li><a href="#options">Get Started</a></li>
@@ -71,16 +71,7 @@
                     </select>
                 </div>
                 
-                <div class="preference-group">
-                    <label for="time-range">📅 Time Range:</label>
-                    <select id="time-range">
-                        <option value="current">Current Hour</option>
-                        <option value="today">Today</option>
-                        <option value="week">Last 7 Days</option>
-                        <option value="month">Last Month</option>
-                        <option value="year">Last Year</option>
-                    </select>
-                </div>
+               
                 
                 <div class="preference-group">
                     <label for="data-source">📊 Data Source:</label>
@@ -213,71 +204,63 @@
         // Add event listeners for dropdowns
         const stateSelect = document.getElementById('state');
         const pollutantSelect = document.getElementById('pollutant-type');
-        const timeRangeSelect = document.getElementById('time-range');
+       
         const dataSourceSelect = document.getElementById('data-source');
         const heatmapBtn = document.getElementById('show-heatmap');
         const summaryDiv = document.getElementById('selection-summary');
         const summaryText = document.getElementById('summary-text');
         
-        function updateSelectionSummary() {
-            const state = stateSelect.value;
-            const pollutant = pollutantSelect.value;
-            const timeRange = timeRangeSelect.value;
-            const dataSource = dataSourceSelect.value;
-            
-            if (state) {
-                const stateText = stateSelect.options[stateSelect.selectedIndex].text;
-                const pollutantText = pollutantSelect.options[pollutantSelect.selectedIndex].text;
-                const timeRangeText = timeRangeSelect.options[timeRangeSelect.selectedIndex].text;
-                const dataSourceText = dataSourceSelect.options[dataSourceSelect.selectedIndex].text;
-                
-                summaryText.innerHTML = `
-                    <strong>State:</strong> ${stateText} | 
-                    <strong>Pollutant:</strong> ${pollutantText} | 
-                    <strong>Time Range:</strong> ${timeRangeText} | 
-                    <strong>Data Source:</strong> ${dataSourceText}
-                `;
-                summaryDiv.style.display = 'block';
-                heatmapBtn.disabled = false;
-            } else {
-                summaryDiv.style.display = 'none';
-                heatmapBtn.disabled = true;
-            }
-        }
+      function updateSelectionSummary() {
+    const state = stateSelect.value;
+    const pollutant = pollutantSelect.value;
+    const dataSource = dataSourceSelect.value;
+
+    if (state) {
+        const stateText = stateSelect.options[stateSelect.selectedIndex].text;
+        const pollutantText = pollutantSelect.options[pollutantSelect.selectedIndex].text;
+        const dataSourceText = dataSourceSelect.options[dataSourceSelect.selectedIndex].text;
+
+        summaryText.innerHTML = `
+            <strong>State:</strong> ${stateText} | 
+            <strong>Pollutant:</strong> ${pollutantText} | 
+            <strong>Data Source:</strong> ${dataSourceText}
+        `;
+        summaryDiv.style.display = 'block';
+        heatmapBtn.disabled = false;
+    } else {
+        summaryDiv.style.display = 'none';
+        heatmapBtn.disabled = true;
+    }
+}
+
         
         stateSelect.addEventListener('change', updateSelectionSummary);
         pollutantSelect.addEventListener('change', updateSelectionSummary);
-        timeRangeSelect.addEventListener('change', updateSelectionSummary);
         dataSourceSelect.addEventListener('change', updateSelectionSummary);
-        
-        heatmapBtn.addEventListener('click', function() {
-            const state = stateSelect.value;
-            const pollutant = pollutantSelect.value;
-            const timeRange = timeRangeSelect.value;
-            const dataSource = dataSourceSelect.value;
-            
-            if (state) {
-                // Show loading state
-                this.textContent = '🔄 Loading Heatmap...';
-                this.disabled = true;
-                
-                // Simulate API call
-                setTimeout(() => {
-                    this.textContent = '🗺️ Show Heatmap';
-                    this.disabled = false;
-                    
-                    // Here you would integrate with your heatmap functionality
-                    console.log('Showing heatmap for:', {
-                        state: state,
-                        pollutant: pollutant,
-                        timeRange: timeRange,
-                        dataSource: dataSource
-                    });
-                    
-                    alert(`Heatmap will be displayed for ${stateSelect.options[stateSelect.selectedIndex].text} showing ${pollutantSelect.options[pollutantSelect.selectedIndex].text} data.`);
-                }, 2000);
-            }
-        });
+heatmapBtn.addEventListener('click', function() {
+    const state = stateSelect.value;
+    const pollutant = pollutantSelect.value;
+    const dataSource = dataSourceSelect.value;
+
+    if (state) {
+        this.textContent = '🔄 Loading Heatmap...';
+        this.disabled = true;
+
+        setTimeout(() => {
+            this.textContent = '🗺️ Show Heatmap';
+            this.disabled = false;
+
+            console.log('Showing heatmap for:', {
+                state: state,
+                pollutant: pollutant,
+                dataSource: dataSource
+            });
+
+            alert(`Heatmap will be displayed for ${stateSelect.options[stateSelect.selectedIndex].text} showing ${pollutantSelect.options[pollutantSelect.selectedIndex].text} data.`);
+        }, 2000);
+    }
+});
+
         
         // Initialize
         updateSelectionSummary();
